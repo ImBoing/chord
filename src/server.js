@@ -72,5 +72,30 @@ client.on("message", async message => {
   }
 });
 
+client.on("guildMemberAdd", async member => {
+  const logchannel = await member.guild.channels.cache.get("691048751258927145");
+  const guild = member.guild;
+  let je = new MessageEmbed()
+    .setTitle("A member has joined the server")
+    .setColor(data.embedColor)
+    .setDescription(`You are member number: ${guild.memberCount}`)
+    .addField(
+      `Welcome ${member.user.tag}`,
+      `Please read <#691048732304867328> and <#691048734024532008>. Enjoy your stay!`
+    );
+  logchannel.send(je);
+});
+
+client.on("guildMemberRemove", async member => {
+  const logchannel = await member.guild.channels.cache.get("691048751258927145");
+  const guild = member.guild;
+  let le = new MessageEmbed()
+    .setTitle("A member has left the server")
+    .setColor(data.embedColor)
+    .setDescription(`We now have ${guild.memberCount} members`)
+    .addField(`Goodbye ${member.user.tag}`, `We hope you enjoyed your stay.`);
+  logchannel.send(le)
+});
+
 client.on("error", error => console.error(error));
 client.login('NzA2MzAwMTQ2NTM0NTgwMjk1.Xq4PaQ.-kAr5_KwCfG7ULbdczTEXRPAwnc');

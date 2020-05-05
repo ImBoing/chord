@@ -14,8 +14,8 @@ module.exports = {
     },
     "adDeletedMessage": "Your advertisement has been deleted because it does not follow our rules. This is an automatic action if you believe this was a mistake please contact the staff team",
     "selfPromoDeletedMessage": "Your self promo has been deleted because it does not follow our rules. This is an automatic action if you believe this was a mistake please contact the staff team",
-    "warnChannel": "706985573147082763",
-    "logChannel": "706985573147082763",
+    "warnChannel": "691048773782339664",
+    "logChannel": "691048821605662780",
     "embedFooter": "Developed and Maintained by Jax#6986",
     "embedColor": "#f38e28",
     "advertisingChannels": [
