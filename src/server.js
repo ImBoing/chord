@@ -94,7 +94,7 @@ client.on("guildMemberRemove", async member => {
     .setColor(data.embedColor)
     .setDescription(`We now have ${guild.memberCount} members`)
     .addField(`Goodbye ${member.user.tag}`, `We hope you enjoyed your stay.`);
-  logchannel.send(le)
+  logchannel.send(le).then(msg => msg.delete({ timeout: 30000 }))
 });
 
 client.on("error", error => console.error(error));
