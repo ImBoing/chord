@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 module.exports = {
     name: "clear",
-
+    category: "moderation",
     run: async (client, message, args) => {
         if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("Im sorry, You cant do that :x:");
         message.delete();

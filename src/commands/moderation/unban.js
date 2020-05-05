@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js');
 const data = require('../../config')
 module.exports = {
   name: "ban",
-
+  category: "moderation",
   run: async (client, message, args) => {
     message.delete()
     const logchannel = await message.guild.channels.cache.get(data.logChannel)

@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const data = require('../../config')
 module.exports = {
     name: "mute",
-
+    category: "moderation",
     run: async (client, message, args) => {
         message.delete();
         return message.channel.send('Still under development')

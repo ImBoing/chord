@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 const data = require('../../config')
 module.exports = {
     name: "ban",
-
+    category: "moderation",
     run: async (client, message, args) => {
         const logchannel = await message.guild.channels.cache.get(data.logChannel)
         let bUser = message.mentions.users.first() ? message.mentions.users.first().tag : client.users.fetch(args[0])

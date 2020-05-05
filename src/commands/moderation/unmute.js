@@ -3,7 +3,7 @@ const fs = require("fs");
 const ms = require("ms");
 module.exports = {
   name: "unmute",
-
+  category: "moderation",
   run: async (client, message, args) => {
     return message.channel.send('Still under development')
     const logchannel = message.guild.channels.find(channel => channel.name === "logs");
