@@ -4,7 +4,7 @@ const fs = require("fs");
 const client = new Client({ disableEveryone: true });
 const data = require('./config.js')
 const { selfPromo, serverAdvertising, channelAdvertiseCheck, channelPromoCheck } = require('./functions')
-client.categories = fs.readdirSync("./commands/");
+client.categories = fs.readdirSync("./src/commands/");
 client.commands = new Collection();
 client.aliases = new Collection();
 
