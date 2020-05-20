@@ -98,4 +98,4 @@ client.on("guildMemberRemove", async member => {
 });
 
 client.on("error", error => console.error(error));
-client.login('NzA2MzAwMTQ2NTM0NTgwMjk1.Xq4PaQ.-kAr5_KwCfG7ULbdczTEXRPAwnc');
+client.login('NzA2MzAwMTQ2NTM0NTgwMjk1.XsSKeg.Kl4OdSPXRcrFR1K6ChbotCsfDBE');
