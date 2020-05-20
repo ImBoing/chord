@@ -1,54 +1,41 @@
 const { MessageEmbed } = require("discord.js");
+
 module.exports = {
     name: "help",
     category: "info",
     description: "Returns all commands, or one specific command info",
     usage: "[command | alias]",
     run: async (client, message, args) => {
-        if (args[0]) {
-            return getCMD(client, message, args[0]);
+        if (!args[0]) {
+            const hEmbed = new MessageEmbed()
+            .setColor('RANDOM')
+            .setAuthor('Lighting Ads Commands List', client.user.displayAvatarURL())
+            .setDescription('You can use `la! help [command]` or `la! help [category]` for more help. Example: `la! help mute`')
+            .addField('**Info**', `\`la!help info\``, true)
+            .addField('**Moderation**', `\`la!help moderation\``, true)
+            .setThumbnail(client.user.displayAvatarURL({ size: 1024 }))
+
+            return message.channel.send(hEmbed)
         } else {
-            return getAll(client, message);
-        }
+            const categorySearch = client.commands.filter(c => c.category === args[0].toLowerCase())
+            let command = client.commands.get(args[0].toLowerCase()) || client.commands.get(client.aliases.get(args[0].toLowerCase()));
+            
+                if (!command) {
+                if(categorySearch.size === 0) return;
+                    const category = new MessageEmbed()
+                    .setColor('RANDOM')
+                    .setTitle(`**${args[0].slice(0, 1).toUpperCase() + args[0].slice(1)} Commands**`)
+                    .setDescription(categorySearch.map(c => `\`${c.name}\``).join(' '))
+                    message.channel.send(category)
+                } else if (command){
+                    const embed = new MessageEmbed()
+                    .setColor('RANDOM')
+                    .setTitle(`**la!${command.name.slice(0, 1).toLowerCase() + command.name.slice(1)} info**`)
+                    .setDescription(`${command.description}`)
+                    .addField('Usage' , `\`\`\`${command.usage}\`\`\``)
+                    .addField('Aliases', `\`${command.aliases ? command.aliases.join('`, `') : `No aliases`}\``)
+                    message.channel.send(embed)
+                }
+        } 
     }
-}
-
-function getAll(client, message) {
-    const embed = new MessageEmbed()
-        .setColor("RANDOM")
-
-    const commands = (category) => {
-        return client.commands
-            .filter(cmd => cmd.category === category)
-            .map(cmd => `- \`${cmd.name}\``)
-            .join("\n");
-    }
-
-    const info = client.categories
-        .map(cat => `**${cat[0].toUpperCase() + cat.slice(1)}** \n${commands(cat)}`)
-        .reduce((string, category) => string + "\n" + category);
-
-    return message.channel.send(embed.setDescription(info));
-}
-
-function getCMD(client, message, input) {
-    const embed = new MessageEmbed()
-
-    const cmd = client.commands.get(input.toLowerCase()) || client.commands.get(client.aliases.get(input.toLowerCase()));
-
-    let info = `No information found for command **${input.toLowerCase()}**`;
-
-    if (!cmd) {
-        return message.channel.send(embed.setColor("RED").setDescription(info));
-    }
-
-    if (cmd.name) info = `**Command name**: ${cmd.name}`;
-    if (cmd.aliases) info += `\n**Aliases**: ${cmd.aliases.map(a => `\`${a}\``).join(", ")}`;
-    if (cmd.description) info += `\n**Description**: ${cmd.description}`;
-    if (cmd.usage) {
-        info += `\n**Usage**: ${cmd.usage}`;
-        embed.setFooter(`Syntax: <> = required, [] = optional`);
-    }
-
-    return message.channel.send(embed.setColor("GREEN").setDescription(info));
 }
