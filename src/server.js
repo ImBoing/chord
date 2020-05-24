@@ -69,9 +69,49 @@ client.on("message", async message => {
     if (!command) command = client.commands.get(client.aliases.get(cmd));
     if (command) command.run(client, message, args);
   }
+// --------- M O D M A I L --------- \\
+  const guild = client.guilds.cache.get("688454304792969267"); // Staff guild id 695278738018926632
 
-  const guild = bot.guilds.cache.get("690991118518845464"); // Guild id
+  if (
+    message.author.bot || // Return if author is a bot 
+    message.content.startsWith(prefix) || // Return if the message starts with the prefix
+    (message.guild && message.guild.id !== guild.id) || // Return if the guild is incorrect
+    (message.guild) // Return if guild channel & channel parent is incorrect (&& message.channel.parentID !== "695300095075287081" || message.channel.parentID !== '695300275786874980' || message.channel.parentID !== '695300195063431179' || message.channel.parentID !== '695300449024344135' || message.channel.parentID !== '702479822877753385')
+)
+    return;
+
+  const openThread = new Map()
+
+  if (!guild.channels.cache.some((ch) => ch.topic === 'Modmail channel '+ message.author.id + ' (Please do not change)')) {
+    console.log('no channel')
+    console.log(openThread.has(message.author.id))
+    await message.react('✅')
+    if (!openThread.has(message.author.id)) {
+      openThread.set(message.author.id, 'something')
+      console.log('hi')
+      const ch = new MessageEmbed()
+      .setColor('GREEN')
+      .setTitle('ModMail Menu')
+      .setDescription('Welcome to modmail. This system is **only** to be used to contact staff members about reports, punishments, partnering with the server, or to recieve information about the servers socials. Missusing this will result in a punishment. ')
+      .addField('What is this?', 'If you\'re reporting a member respond with `report` below. If you\'re interested with partnering with the server respond with `partner`. If you\'re wanting to know more about the servers socials respond below with `public relation`.')
   
+      message.channel.send(ch)
+
+
+    } else if (openThread.has(message.author.id)) {
+        const filter = m => m.author.id === message.author.id
+        message.channel.awaitMessages(filter, {max: 1, time: 60000})
+        .then(collected => {
+          console.log(collected.first().content)
+        })
+    } 
+
+    console.log(openThread)
+    console.log(openThread.has(message.author.id))
+  } else {
+    console.log('2')
+  }
+
   // }}
 });
 
