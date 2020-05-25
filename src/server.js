@@ -15,6 +15,11 @@ config({
   require(`./handlers/${handler}`)(client);
 });
 
+const connectDB = require('./database/connect.js');
+connectDB()
+
+const openThread = new Map()
+
 client.on("message", async message => {
   if (message.author.bot) return
   // if (channelAdvertiseCheck(message.channel.id) || channelPromoCheck(message.channel.id)) {
@@ -80,37 +85,14 @@ client.on("message", async message => {
 )
     return;
 
-  const openThread = new Map()
-
-  if (!guild.channels.cache.some((ch) => ch.topic === 'Modmail channel '+ message.author.id + ' (Please do not change)')) {
-    console.log('no channel')
-    console.log(openThread.has(message.author.id))
-    await message.react('✅')
-    if (!openThread.has(message.author.id)) {
-      openThread.set(message.author.id, 'something')
-      console.log('hi')
-      const ch = new MessageEmbed()
-      .setColor('GREEN')
-      .setTitle('ModMail Menu')
-      .setDescription('Welcome to modmail. This system is **only** to be used to contact staff members about reports, punishments, partnering with the server, or to recieve information about the servers socials. Missusing this will result in a punishment. ')
-      .addField('What is this?', 'If you\'re reporting a member respond with `report` below. If you\'re interested with partnering with the server respond with `partner`. If you\'re wanting to know more about the servers socials respond below with `public relation`.')
-  
-      message.channel.send(ch)
-
-
-    } else if (openThread.has(message.author.id)) {
-        const filter = m => m.author.id === message.author.id
-        message.channel.awaitMessages(filter, {max: 1, time: 60000})
-        .then(collected => {
-          console.log(collected.first().content)
-        })
-    } 
-
-    console.log(openThread)
-    console.log(openThread.has(message.author.id))
-  } else {
-    console.log('2')
+  if (openThread.has(message.author.id)) {
+    console.log('in map')
+  } else if (!openThread.has(message.author.id)) {
+    console.log('not in map')
+    openThread.set(message.author.id, message.author.id)
   }
+  console.log(openThread.get(message.author.id))
+  
 
   // }}
 });
