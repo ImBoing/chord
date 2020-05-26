@@ -1,7 +1,9 @@
 const { Client, Collection, MessageEmbed } = require("discord.js");
 const { config } = require("dotenv");
 const fs = require("fs");
-const client = new Client({ disableEveryone: true });
+const client = new Client({
+  disableEveryone: true
+});
 const data = require('./config.js')
 const { selfPromo, serverAdvertising, channelAdvertiseCheck, channelPromoCheck } = require('./functions')
 client.categories = fs.readdirSync("./src/commands/");
@@ -74,25 +76,86 @@ client.on("message", async message => {
     if (!command) command = client.commands.get(client.aliases.get(cmd));
     if (command) command.run(client, message, args);
   }
-// --------- M O D M A I L --------- \\
-  const guild = client.guilds.cache.get("688454304792969267"); // Staff guild id 695278738018926632
+  // --------- M O D M A I L --------- \\
+  const guild = client.guilds.cache.get("695278738018926632"); // Staff guild id 695278738018926632
+  const report = require('./MM events/MM-report.js') // function for reports
+  const partner = require('./MM events/MM-partner.js') // function for partnerships
 
   if (
     message.author.bot || // Return if author is a bot 
     message.content.startsWith(prefix) || // Return if the message starts with the prefix
-    (message.guild && message.guild.id !== guild.id) || // Return if the guild is incorrect
-    (message.guild) // Return if guild channel & channel parent is incorrect (&& message.channel.parentID !== "695300095075287081" || message.channel.parentID !== '695300275786874980' || message.channel.parentID !== '695300195063431179' || message.channel.parentID !== '695300449024344135' || message.channel.parentID !== '702479822877753385')
-)
+    (message.guild && message.guild.id !== guild.id) // Return if the guild is incorrect
+  )
+
     return;
 
-  if (openThread.has(message.author.id)) {
-    console.log('in map')
-  } else if (!openThread.has(message.author.id)) {
-    console.log('not in map')
-    openThread.set(message.author.id, message.author.id)
+  if (message.guild) {
+    // Embed with staff members message
+    const mg = new MessageEmbed()
+      .setColor('GREEN')
+      .setAuthor(message.author.tag, message.author.displayAvatarURL(), `https://discordapp.com/users/${message.author.id}`)
+      .setDescription(message.content)
+      .setFooter("Message recieved")
+      .setTimestamp();
+
+    // Send the user a message
+    const array = message.channel.topic
+    const id = array.split(' ')[2]
+
+    if (isNaN(id)) {
+      return
+    }
+
+    const sent = await client.users.cache
+      .get(id)
+
+      .send(mg) // Returns true if successfully sent
+      .catch(() => {}); // Returns false if there's an error
+    message.react(sent ? "✅" : "❌"); // React with the correct emoji
+  } else if (!guild.channels.cache.some((ch) => ch.topic === 'Modmail channel ' + message.author.id + ' (Please do not change)')) {
+    try {
+      await message.react('✅')
+      const channel = message.channel
+
+      const ph1 = new MessageEmbed()
+        .setColor('GREEN')
+        .setTitle('ModMail Menu')
+        .setDescription('Welcome to modmail. This system is only to be used to contact staff members about reports, punishments, partnering with the server, recieve information about the servers socials, or contact server management. Missusing this will result in a punishment.')
+        .addField('What is this?', 'If you\'re reporting a member respond with `report` below. If you\'re interested with partnering with the server respond with `partner`. If you\'re wanting to know more about the servers socials respond below with `socials`. If you\'re wanting to know more about the servers socials respond below with `management`')
+
+
+      if (!openThread.has(message.author.id)) {
+        openThread.set(message.author.id)
+        channel.send(ph1).then(msg => {
+          const filter = m => m.author.id === message.author.id;
+          const channel = msg.channel;
+          const collector = channel.createMessageCollector(filter, {
+            time: 7200000
+          })
+
+          collector.on('collect', async message => {
+            if (message.content === 'report') {
+              console.log('file report')
+              report(message, filter, guild, message.author, openThread)
+            } else if (message.content === 'partner') {
+              console.log('partnership')
+              partner(message, filter, guild, message.author, openThread)
+            } else if (message.content === 'socials') {
+              console.log('social media')
+              
+              message.channel.send('Please write the extent of your message here. Try to include as much detalis as possible for easier communication')
+            } else if (message.content === 'management') {
+              console.log('management')
+
+            }
+          })
+        })
+      }
+    } catch (err) {
+      console.log(err)
+    }
   }
-  console.log(openThread.get(message.author.id))
-  
+
 
   // }}
 });
@@ -119,7 +182,9 @@ client.on("guildMemberRemove", async member => {
     .setColor(data.embedColor)
     .setDescription(`We now have ${guild.memberCount} members`)
     .addField(`Goodbye ${member.user.tag}`, `We hope you enjoyed your stay.`);
-  logchannel.send(le).then(msg => msg.delete({ timeout: 30000 }))
+  logchannel.send(le).then(msg => msg.delete({
+    timeout: 30000
+  }))
 });
 
 client.on("error", error => console.error(error));
