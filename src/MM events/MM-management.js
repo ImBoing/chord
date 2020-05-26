@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 
-async function socials (message, filter, guild, member, map) {
+async function management (message, filter, guild, member, map) {
   let cont;
   await message.channel.send('Please write the extent of your message here. Try to include as much detalis as possible for easier communication').then(message => {
     const x = message.channel.createMessageCollector(filter)
@@ -11,18 +11,34 @@ async function socials (message, filter, guild, member, map) {
       guild.channels
         .create(member.tag.replace('#', '-'), {
           topic: 'Modmail channel ' + member + ' (Please do not change)',
-          parent: '714882905645514782',
+          parent: '714882756131160074',
           permissionOverwrites: [{
               id: guild.id,
               deny: ['VIEW_CHANNEL']
             },
             {
-              id: '713625993587327050',
+              id: '695283327254396929',
               allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
             },
             {
               id: member.id,
               allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
+            },
+            {
+                id: '695283327254396929',
+                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
+            },
+            {
+                id: '695283502106804224',
+                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
+            },
+            {
+                id: '695285259058675805',
+                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
+            },
+            {
+                id: '695285348380442695',
+                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES']
             }
           ]
         })
@@ -55,4 +71,4 @@ async function socials (message, filter, guild, member, map) {
   })
 }
 
-module.exports = (socials)
+module.exports = (management)

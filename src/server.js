@@ -80,7 +80,8 @@ client.on("message", async message => {
   const guild = client.guilds.cache.get("695278738018926632"); // Staff guild id 695278738018926632
   const report = require('./MM events/MM-report.js') // function for reports
   const partner = require('./MM events/MM-partner.js') // function for partnerships
-
+  const socials = require('./MM events/MM-socials.js') // function for socials
+  const management = require('./MM events/MM-management.js') // function for management
   if (
     message.author.bot || // Return if author is a bot 
     message.content.startsWith(prefix) || // Return if the message starts with the prefix
@@ -134,19 +135,18 @@ client.on("message", async message => {
           })
 
           collector.on('collect', async message => {
-            if (message.content === 'report') {
+            if (message.content.toLowerCase() === 'report') {
               console.log('file report')
               report(message, filter, guild, message.author, openThread)
-            } else if (message.content === 'partner') {
+            } else if (message.content.toLowerCase() === 'partner') {
               console.log('partnership')
               partner(message, filter, guild, message.author, openThread)
-            } else if (message.content === 'socials') {
+            } else if (message.content.toLowerCase() === 'socials') {
               console.log('social media')
-              
-              message.channel.send('Please write the extent of your message here. Try to include as much detalis as possible for easier communication')
-            } else if (message.content === 'management') {
+              socials(message, filter, guild, message.author, openThread)
+            } else if (message.content.toLowerCase() === 'management') {
               console.log('management')
-
+              management(message, filter, guild, message.author, openThread)
             }
           })
         })
@@ -154,6 +154,22 @@ client.on("message", async message => {
     } catch (err) {
       console.log(err)
     }
+  } else {
+    console.log('has thread')
+    const destination = guild.channels.cache.find((c) => c.topic === 'Modmail channel '+ message.author.id + ' (Please do not change)');
+        const embed = new MessageEmbed()
+            .setColor('GREEN')
+            .setAuthor(message.author.tag, message.author.displayAvatarURL(), `https://discordapp.com/users/${message.author.id}`)
+            .setDescription(message.content)
+            .setFooter("Message recieved")
+            .setTimestamp();
+
+        if (destination) {
+            destination.send(embed);
+            return message.react("✅");
+        }
+
+        message.react("❌");
   }
 
 
