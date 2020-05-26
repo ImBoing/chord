@@ -23,6 +23,7 @@
     "import/no-dynamic-require": "off",
     "prefer-arrow-callback": "off",
     "no-else-return": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "no-restricted-globals": "off"
   }
 }
