@@ -13,7 +13,8 @@
   "dependencies": {
     "ascii-table": "0.0.9",
     "discord.js": "^12.2.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.9.15"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
