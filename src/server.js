@@ -11,9 +11,9 @@ client.commands = new Collection();
 client.aliases = new Collection();
 
 config({
-  path: __dirname + "/.env"
+  path: `${__dirname}/.env`,
 });
-["command"].forEach(handler => {
+["command"].forEach((handler) => {
   require(`./handlers/${handler}`)(client);
 });
 
@@ -176,10 +176,12 @@ client.on("message", async message => {
   // }}
 });
 
-client.on("guildMemberAdd", async member => {
-  const logchannel = await member.guild.channels.cache.get("691048751258927145");
-  const guild = member.guild;
-  let je = new MessageEmbed()
+client.on("guildMemberAdd", async (member) => {
+  const logchannel = await member.guild.channels.cache.get(
+    "691048751258927145"
+  );
+  const { guild } = member;
+  const je = new MessageEmbed()
     .setTitle("A member has joined the server")
     .setColor(data.embedColor)
     .setDescription(`You are member number: ${guild.memberCount}`)
@@ -190,10 +192,12 @@ client.on("guildMemberAdd", async member => {
   logchannel.send(je);
 });
 
-client.on("guildMemberRemove", async member => {
-  const logchannel = await member.guild.channels.cache.get("691048751258927145");
-  const guild = member.guild;
-  let le = new MessageEmbed()
+client.on("guildMemberRemove", async (member) => {
+  const logchannel = await member.guild.channels.cache.get(
+    "691048751258927145"
+  );
+  const { guild } = member;
+  const le = new MessageEmbed()
     .setTitle("A member has left the server")
     .setColor(data.embedColor)
     .setDescription(`We now have ${guild.memberCount} members`)
@@ -203,5 +207,4 @@ client.on("guildMemberRemove", async member => {
   }))
 });
 
-client.on("error", error => console.error(error));
-client.login('NzA2MzAwMTQ2NTM0NTgwMjk1.XsSKeg.Kl4OdSPXRcrFR1K6ChbotCsfDBE');
+client.login("NzA2MzAwMTQ2NTM0NTgwMjk1.XsSKeg.Kl4OdSPXRcrFR1K6ChbotCsfDBE");
