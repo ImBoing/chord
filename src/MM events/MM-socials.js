@@ -14,7 +14,7 @@ async function socials(message, filter, guild, member, map) {
 
         guild.channels
           .create(member.tag.replace("#", "-"), {
-            topic: `Mod-mail channel ${member} (Please do not change)`,
+            topic: `Mod-mail channel ${member.id} (Please do not change)`,
             parent: "714882905645514782",
             permissionOverwrites: [
               {
