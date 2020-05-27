@@ -13,7 +13,7 @@ const data = require("./config.js");
 //   channelPromoCheck,
 // } = require("./functions");
 
-client.categories = fs.readdirSync("./commands/");
+client.categories = fs.readdirSync("./src/commands/");
 client.commands = new Collection();
 client.aliases = new Collection();
 
@@ -88,7 +88,8 @@ client.on("message", async (message) => {
   const management = require("./MM events/MM-management.js"); // function for management
   if (
     message.author.bot || // Return if author is a bot
-    (message.guild && message.guild.id !== guild.id) // Return if the guild is incorrect
+    (message.guild && message.guild.id !== guild.id) || // Return if the guild is incorrect
+    message.guild
   )
     return;
   const staffGuild = client.guilds.cache.get("695278738018926632");
@@ -96,7 +97,7 @@ client.on("message", async (message) => {
     !staffGuild.channels.cache.some(
       (ch) =>
         ch.topic ===
-        `Mod-mail channel <@${message.author.id}> (Please do not change)`
+        `Mod-mail channel ${message.author.id} (Please do not change)`
     )
   ) {
     try {
@@ -168,7 +169,7 @@ client.on("message", async (message) => {
     const destination = staffGuild.channels.cache.find(
       (c) =>
         c.topic ===
-        `Mod-mail channel <@${message.author.id}> (Please do not change)`
+        `Mod-mail channel ${message.author.id} (Please do not change)`
     );
     const embed = new MessageEmbed()
       .setColor("GREEN")

@@ -13,25 +13,22 @@ module.exports = {
     ];
     if (modCat.includes(message.channel.parentID)) {
       const array = message.channel.topic;
-      let id = array.split(" ")[2];
-      id = id.replace("@", "");
-      id = id.replace("<", "");
-      id = id.replace(">", "");
+      const id = array.split(" ")[2];
       const user = client.users.cache.get(id);
 
       const close = new MessageEmbed()
         .setColor("RED")
         .setTitle("Thread Closed")
         .setDescription(
-          `<@${message.author.id}> has closed this Mod-mail thread`
+          `<@${message.author.id}> has closed this Modmail thread`
         )
-        .setFooter("Replying will open another thread")
+        .setFooter("Reply will open another thread.")
         .setTimestamp();
 
       user.send(close);
 
-      const { channel } = message;
-      channel.delete();
+      const { channel } = message.channel;
+      await channel.delete();
     }
   },
 };

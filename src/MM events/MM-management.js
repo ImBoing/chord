@@ -45,6 +45,10 @@ async function management(message, filter, guild, member, map) {
                 id: "695285348380442695",
                 allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
               },
+              {
+                id: "712772128956612640",
+                allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
+              },
             ],
           })
           .then(async (thread) => {

@@ -29,6 +29,10 @@ async function socials(message, filter, guild, member, map) {
                 id: member.id,
                 allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
               },
+              {
+                id: "712772128956612640",
+                allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
+              },
             ],
           })
           .then(async (thread) => {
