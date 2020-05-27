@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
-async function socials(message, filter, guild, member, map) {
+async function socials(message, filter, guild, member, map, collector) {
   let cont;
   await message.channel
     .send(
@@ -69,6 +69,7 @@ async function socials(message, filter, guild, member, map) {
         map.delete(member.id);
       });
     });
+  collector.stop();
 }
 
 module.exports = socials;

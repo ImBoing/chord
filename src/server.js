@@ -130,7 +130,8 @@ client.on("message", async (message) => {
                 filter,
                 guild,
                 collectedMessage.author,
-                openThread
+                openThread,
+                collector
               );
             } else if (collectedMessage.content.toLowerCase() === "partner") {
               partner(
@@ -138,7 +139,8 @@ client.on("message", async (message) => {
                 filter,
                 guild,
                 collectedMessage.author,
-                openThread
+                openThread,
+                collector
               );
             } else if (collectedMessage.content.toLowerCase() === "socials") {
               socials(
@@ -146,7 +148,8 @@ client.on("message", async (message) => {
                 filter,
                 guild,
                 collectedMessage.author,
-                openThread
+                openThread,
+                collector
               );
             } else if (
               collectedMessage.content.toLowerCase() === "management"
@@ -156,7 +159,8 @@ client.on("message", async (message) => {
                 filter,
                 guild,
                 collectedMessage.author,
-                openThread
+                openThread,
+                collector
               );
             }
           });
