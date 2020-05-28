@@ -13,7 +13,7 @@ const data = require("./config.js");
 //   channelPromoCheck,
 // } = require("./functions");
 
-client.categories = fs.readdirSync("./src/commands/");
+client.categories = fs.readdirSync("./commands/");
 client.commands = new Collection();
 client.aliases = new Collection();
 
