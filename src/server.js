@@ -13,7 +13,7 @@ const data = require("./config.js");
 //   channelPromoCheck,
 // } = require("./functions");
 
-client.categories = fs.readdirSync("./commands/");
+client.categories = fs.readdirSync("./src/commands/");
 client.commands = new Collection();
 client.aliases = new Collection();
 
@@ -88,55 +88,16 @@ client.on("message", async (message) => {
   const management = require("./MM events/MM-management.js"); // function for management
   if (
     message.author.bot || // Return if author is a bot
-    (message.guild && message.guild.id !== guild.id) // Return if the guild is incorrect
+    (message.guild && message.guild.id !== guild.id) || // Return if the guild is incorrect
+    message.guild
   )
     return;
   const staffGuild = client.guilds.cache.get("695278738018926632");
-  if (message.channel.type !== "dm") {
-    const thingCategory = [
-      "714883352510857357",
-      "714882756131160074",
-      "714882834103533599",
-      "714882905645514782",
-    ];
-    if (thingCategory.indexOf(message.channel.parentID) === -1) return;
-    // Embed with staff members message
-    if (!message.content.toLowerCase().startsWith("la!reply")) return;
-    const mg = new MessageEmbed()
-      .setColor("GREEN")
-      .setAuthor(
-        message.author.tag,
-        message.author.displayAvatarURL(),
-        `https://discord.com/users/${message.author.id}`
-      )
-      .setDescription(message.content.toLowerCase().replace("la!reply", ""))
-      .setFooter("Message received")
-      .setTimestamp();
-
-    // Send the user a message
-    const array = message.channel.topic;
-    let id = array.split(" ")[2];
-    id = id.replace("@", "");
-    id = id.replace("<", "");
-    id = id.replace(">", "");
-
-    if (isNaN(id)) {
-      return;
-    }
-
-    const sent = await client.users.cache
-      .get(id)
-
-      .send(mg) // Returns true if successfully sent
-      .catch(() => {
-        /* empty */
-      }); // Returns false if there's an error
-    message.react(sent ? "✅" : "❌"); // React with the correct emoji
-  } else if (
+  if (
     !staffGuild.channels.cache.some(
       (ch) =>
         ch.topic ===
-        `Mod-mail channel <@${message.author.id}> (Please do not change)`
+        `Mod-mail channel ${message.author.id} (Please do not change)`
     )
   ) {
     try {
@@ -169,7 +130,8 @@ client.on("message", async (message) => {
                 filter,
                 guild,
                 collectedMessage.author,
-                openThread
+                openThread,
+                collector
               );
             } else if (collectedMessage.content.toLowerCase() === "partner") {
               partner(
@@ -177,7 +139,8 @@ client.on("message", async (message) => {
                 filter,
                 guild,
                 collectedMessage.author,
-                openThread
+                openThread,
+                collector
               );
             } else if (collectedMessage.content.toLowerCase() === "socials") {
               socials(
@@ -185,7 +148,8 @@ client.on("message", async (message) => {
                 filter,
                 guild,
                 collectedMessage.author,
-                openThread
+                openThread,
+                collector
               );
             } else if (
               collectedMessage.content.toLowerCase() === "management"
@@ -195,7 +159,8 @@ client.on("message", async (message) => {
                 filter,
                 guild,
                 collectedMessage.author,
-                openThread
+                openThread,
+                collector
               );
             }
           });
@@ -208,7 +173,7 @@ client.on("message", async (message) => {
     const destination = staffGuild.channels.cache.find(
       (c) =>
         c.topic ===
-        `Mod-mail channel <@${message.author.id}> (Please do not change)`
+        `Mod-mail channel ${message.author.id} (Please do not change)`
     );
     const embed = new MessageEmbed()
       .setColor("GREEN")

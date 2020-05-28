@@ -1,6 +1,6 @@
 const { MessageEmbed } = require("discord.js");
 
-async function socials(message, filter, guild, member, map) {
+async function socials(message, filter, guild, member, map, collector) {
   let cont;
   await message.channel
     .send(
@@ -14,7 +14,7 @@ async function socials(message, filter, guild, member, map) {
 
         guild.channels
           .create(member.tag.replace("#", "-"), {
-            topic: `Mod-mail channel ${member} (Please do not change)`,
+            topic: `Mod-mail channel ${member.id} (Please do not change)`,
             parent: "714882905645514782",
             permissionOverwrites: [
               {
@@ -27,6 +27,10 @@ async function socials(message, filter, guild, member, map) {
               },
               {
                 id: member.id,
+                allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
+              },
+              {
+                id: "712772128956612640",
                 allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
               },
             ],
@@ -65,6 +69,7 @@ async function socials(message, filter, guild, member, map) {
         map.delete(member.id);
       });
     });
+  collector.stop();
 }
 
 module.exports = socials;
