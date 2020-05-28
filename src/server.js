@@ -164,6 +164,9 @@ client.on("message", async (message) => {
               );
             }
           });
+          collector.on("end", (collectedMessage) => {
+            console.log(`collected ${collectedMessage.size} messages`);
+          });
         });
       }
     } catch (err) {

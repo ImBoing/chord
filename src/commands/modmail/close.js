@@ -27,7 +27,7 @@ module.exports = {
 
       user.send(close);
 
-      const { channel } = message.channel;
+      const { channel } = message;
       await channel.delete();
     }
   },
