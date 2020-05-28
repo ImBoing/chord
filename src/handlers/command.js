@@ -3,8 +3,8 @@ const Ascii = require("ascii-table");
 
 const table = new Ascii("Commands");
 module.exports = (client) => {
-  readdirSync("../commands").forEach((dir) => {
-    const commands = readdirSync(`../commands/${dir}`).filter((file) =>
+  readdirSync("./commands").forEach((dir) => {
+    const commands = readdirSync(`./commands/${dir}`).filter((file) =>
       file.endsWith(".js")
     );
     for (const file of commands) {
