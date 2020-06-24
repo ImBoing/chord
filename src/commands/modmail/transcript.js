@@ -6,7 +6,7 @@ const { JSDOM } = jsdom;
 const dom = new JSDOM();
 const { document } = dom.window;
 const moment = require('moment');
-const BaseCommand = require('../../Structures/BaseCommand.js');
+const BaseCommand = require('../../structures/BaseCommand.js');
 
 module.exports = class Transcript extends BaseCommand {
   constructor(...args) {

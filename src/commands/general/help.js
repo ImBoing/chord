@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const BaseCommand = require('../../Structures/BaseCommand.js');
+const BaseCommand = require('../../structures/BaseCommand.js');
 
 module.exports = class Help extends BaseCommand {
   constructor(...args) {
@@ -17,7 +17,7 @@ module.exports = class Help extends BaseCommand {
       const hEmbed = new MessageEmbed()
         .setColor('RANDOM')
         .setAuthor(
-          'Lighting Ads Commands List',
+          'Lighting Ads commands List',
           this.client.user.displayAvatarURL(),
         )
         .setDescription(

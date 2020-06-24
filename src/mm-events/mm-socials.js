@@ -3,7 +3,7 @@
 const { MessageEmbed } = require('discord.js');
 const data = require('../database/models/modmail.js');
 
-async function management(message, filter, guild, member, map, collector) {
+async function socials(message, filter, guild, member, map, collector) {
   let cont;
   await message.channel
     .send(
@@ -18,34 +18,18 @@ async function management(message, filter, guild, member, map, collector) {
         guild.channels
           .create(member.tag.replace('#', '-'), {
             topic: `Mod-mail channel ${member.id} (Please do not change)`,
-            parent: '714882756131160074',
+            parent: '714882905645514782',
             permissionOverwrites: [
               {
                 id: guild.id,
                 deny: ['VIEW_CHANNEL'],
               },
               {
-                id: '695283327254396929',
+                id: '713625993587327050',
                 allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
               },
               {
                 id: member.id,
-                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
-              },
-              {
-                id: '695283327254396929',
-                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
-              },
-              {
-                id: '695283502106804224',
-                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
-              },
-              {
-                id: '695285259058675805',
-                allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
-              },
-              {
-                id: '695285348380442695',
                 allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
               },
               {
@@ -59,7 +43,7 @@ async function management(message, filter, guild, member, map, collector) {
               .setColor('GREEN')
               .setTitle('New Thread')
               .setDescription(
-                'Commands that are not under the **ModMail** and are used in this channel will be ignored.',
+                'commands that are not under the **ModMail** and are used in this channel will be ignored.',
               )
               .setFooter(`User id: ${member.id}`);
 
@@ -68,7 +52,7 @@ async function management(message, filter, guild, member, map, collector) {
             const info = new data({
               ticketOwner: member.id,
               channel: thread.id,
-              topic: 'Management',
+              topic: 'Socials',
               dateCreated: new Date(Date.now()),
             });
 
@@ -100,4 +84,4 @@ async function management(message, filter, guild, member, map, collector) {
   collector.stop();
 }
 
-module.exports = management;
+module.exports = socials;

@@ -8,7 +8,7 @@ const d = require('../../database/models/modmail.js');
 const { JSDOM } = jsdom;
 const dom = new JSDOM();
 const { document } = dom.window;
-const BaseCommand = require('../../Structures/BaseCommand.js');
+const BaseCommand = require('../../structures/BaseCommand.js');
 
 module.exports = class Hello extends BaseCommand {
   constructor(...args) {

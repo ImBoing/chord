@@ -3,7 +3,7 @@
 const { MessageEmbed } = require('discord.js');
 const data = require('../database/models/modmail.js');
 
-async function socials(message, filter, guild, member, map, collector) {
+async function partner(message, filter, guild, member, map, collector) {
   let cont;
   await message.channel
     .send(
@@ -18,14 +18,14 @@ async function socials(message, filter, guild, member, map, collector) {
         guild.channels
           .create(member.tag.replace('#', '-'), {
             topic: `Mod-mail channel ${member.id} (Please do not change)`,
-            parent: '714882905645514782',
+            parent: '714882834103533599',
             permissionOverwrites: [
               {
                 id: guild.id,
                 deny: ['VIEW_CHANNEL'],
               },
               {
-                id: '713625993587327050',
+                id: '713624883556515840',
                 allow: ['VIEW_CHANNEL', 'SEND_MESSAGES'],
               },
               {
@@ -43,7 +43,7 @@ async function socials(message, filter, guild, member, map, collector) {
               .setColor('GREEN')
               .setTitle('New Thread')
               .setDescription(
-                'Commands that are not under the **ModMail** and are used in this channel will be ignored.',
+                'commands that are not under the **ModMail** and are used in this channel will be ignored.',
               )
               .setFooter(`User id: ${member.id}`);
 
@@ -52,7 +52,7 @@ async function socials(message, filter, guild, member, map, collector) {
             const info = new data({
               ticketOwner: member.id,
               channel: thread.id,
-              topic: 'Socials',
+              topic: 'Partner',
               dateCreated: new Date(Date.now()),
             });
 
@@ -84,4 +84,4 @@ async function socials(message, filter, guild, member, map, collector) {
   collector.stop();
 }
 
-module.exports = socials;
+module.exports = partner;

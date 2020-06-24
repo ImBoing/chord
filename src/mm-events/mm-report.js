@@ -43,7 +43,7 @@ async function report(message, filter, guild, member, map, collector) {
               .setColor('GREEN')
               .setTitle('New Thread')
               .setDescription(
-                'Commands that are not under the **ModMail** and are used in this channel will be ignored.',
+                'commands that are not under the **ModMail** and are used in this channel will be ignored.',
               )
               .setFooter(`User id: ${member.id}`);
 

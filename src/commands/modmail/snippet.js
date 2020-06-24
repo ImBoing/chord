@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const BaseCommand = require('../../Structures/BaseCommand.js');
+const BaseCommand = require('../../structures/BaseCommand.js');
 const Data = require('../../database/models/snippet.js');
 
 module.exports = class Hello extends BaseCommand {

@@ -41,10 +41,10 @@ module.exports = class LAClient extends Client {
       }
 
       const guild = this.guilds.cache.get('695278738018926632');
-      const report = require('../MM events/MM-report.js');
-      const partner = require('../MM events/MM-partner.js');
-      const socials = require('../MM events/MM-socials.js');
-      const management = require('../MM events/MM-management.js');
+      const report = require('../mm-events/mm-report.js');
+      const partner = require('../mm-events/mm-partner.js');
+      const socials = require('../mm-events/mm-socials.js');
+      const management = require('../mm-events/mm-management.js');
 
       if (
         message.author.bot ||

@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 const { MessageEmbed } = require('discord.js');
-const BaseCommand = require('../../Structures/BaseCommand.js');
+const BaseCommand = require('../../structures/BaseCommand.js');
 
 module.exports = class Hello extends BaseCommand {
   constructor(...args) {
