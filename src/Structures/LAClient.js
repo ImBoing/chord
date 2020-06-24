@@ -27,7 +27,7 @@ module.exports = class LAClient extends Client {
     });
 
     this.on("message", async (message) => {
-      const prefix = this.prefix;
+      const prefix = "la!";
       if (message.author.bot) return;
 
       // eslint-disable-next-line no-unused-vars
