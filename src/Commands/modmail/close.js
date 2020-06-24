@@ -1,54 +1,49 @@
-/* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
-const { MessageEmbed, Collection } = require("discord.js");
-const moment = require("moment");
-// eslint-disable-next-line import/order
-const d = require("../../database/models/modmail.js");
-const fs = require("fs").promises;
-const jsdom = require("jsdom");
+const { MessageEmbed, Collection } = require('discord.js');
+const moment = require('moment');
+const fs = require('fs').promises;
+const jsdom = require('jsdom');
+const d = require('../../database/models/modmail.js');
 
 const { JSDOM } = jsdom;
 const dom = new JSDOM();
 const { document } = dom.window;
-const BaseCommand = require("../../Structures/BaseCommand.js");
+const BaseCommand = require('../../Structures/BaseCommand.js');
 
 module.exports = class Hello extends BaseCommand {
   constructor(...args) {
     super(...args, {
-      name: "tclose",
-      aliases: ["end"],
-      description: "close a modmail thread",
-      usage: "close",
+      name: 'tclose',
+      aliases: ['end'],
+      description: 'close a modmail thread',
+      usage: 'close',
     });
   }
 
   async run(message) {
     const modCat = [
-      "714882756131160074",
-      "714883352510857357",
-      "714882834103533599",
-      "714882905645514782",
+      '714882756131160074',
+      '714883352510857357',
+      '714882834103533599',
+      '714882905645514782',
     ];
     if (modCat.includes(message.channel.parentID)) {
       const array = message.channel.topic;
-      const id = array.split(" ")[2];
+      const id = array.split(' ')[2];
       const user = this.client.users.cache.get(id);
 
       const close = new MessageEmbed()
-        .setColor("RED")
-        .setTitle("Thread Closed")
+        .setColor('RED')
+        .setTitle('Thread Closed')
         .setDescription(
-          `<@${message.author.id}> has closed this Modmail thread`
+          `<@${message.author.id}> has closed this Modmail thread`,
         )
-        .setFooter("Replying will open another thread.")
+        .setFooter('Replying will open another thread.')
         .setTimestamp();
 
       await user.send(close);
 
-      // const { channel } = message;
-      // await channel.delete();
-
-      const mmLog = this.client.channels.cache.get("719604748872843274");
+      const mmLog = this.client.channels.cache.get('719604748872843274');
 
       const info = await d.findOne({
         channel: message.channel.id,
@@ -65,7 +60,9 @@ module.exports = class Hello extends BaseCommand {
         .fetch({
           limit: 100,
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
 
       messageCollection = messageCollection.concat(channelMessages);
 
@@ -82,7 +79,7 @@ module.exports = class Hello extends BaseCommand {
       }
       const msgs = messageCollection.array().reverse();
       const data = await fs
-        .readFile(`${__dirname}/../../Structures/transcript.html`, "utf8")
+        .readFile(`${__dirname}/../../Structures/transcript.html`, 'utf8')
         .catch((err) => console.log(err));
 
       console.log(messageCollection.size);
@@ -93,53 +90,53 @@ module.exports = class Hello extends BaseCommand {
           .catch((err) => console.log(err));
 
         // Info place holder
-        const infoElement = document.createElement("div");
-        infoElement.className = "info";
+        const infoElement = document.createElement('div');
+        infoElement.className = 'info';
 
         // Guild icon
-        const guildIconElement = document.createElement("div");
-        guildIconElement.className = "info_guild-icon-container";
-        const guildImg = document.createElement("img");
-        guildImg.className = "info_guild-icon";
-        guildImg.setAttribute("width", "88");
+        const guildIconElement = document.createElement('div');
+        guildIconElement.className = 'info_guild-icon-container';
+        const guildImg = document.createElement('img');
+        guildImg.className = 'info_guild-icon';
+        guildImg.setAttribute('width', '88');
         guildImg.setAttribute(
-          "src",
+          'src',
           message.guild.iconURL({
             size: Number(128),
-            format: "png",
+            format: 'png',
             dynamic: true,
-          })
+          }),
         );
         infoElement.appendChild(guildIconElement);
         guildIconElement.appendChild(guildImg);
 
         // Guild Info
-        const guildInfoElement = document.createElement("div");
-        guildInfoElement.className = "info__metadata";
+        const guildInfoElement = document.createElement('div');
+        guildInfoElement.className = 'info__metadata';
 
         infoElement.appendChild(guildInfoElement);
 
         // Guild name
-        const guildNameElement = document.createElement("div");
-        guildNameElement.className = "info_guild-name";
+        const guildNameElement = document.createElement('div');
+        guildNameElement.className = 'info_guild-name';
         const guildName = document.createTextNode(message.guild.name);
         guildInfoElement.appendChild(guildNameElement);
         guildNameElement.appendChild(guildName);
 
         // Channel name
-        const channelNameElement = document.createElement("div");
-        channelNameElement.className = "info_channel-name";
+        const channelNameElement = document.createElement('div');
+        channelNameElement.className = 'info_channel-name';
         const chName = document.createTextNode(message.channel.name);
         guildInfoElement.appendChild(channelNameElement);
         channelNameElement.appendChild(chName);
 
         // Message count
-        const messageCountElement = document.createElement("div");
-        messageCountElement.className = "info_channel-message-count";
+        const messageCountElement = document.createElement('div');
+        messageCountElement.className = 'info_channel-message-count';
         const messageCount = document.createTextNode(
           `${messageCollection.size} ${
-            messageCollection.size > 1 ? "messages" : "message"
-          }`
+            messageCollection.size > 1 ? 'messages' : 'message'
+          }`,
         );
         guildInfoElement.appendChild(messageCountElement);
         messageCountElement.appendChild(messageCount);
@@ -148,43 +145,43 @@ module.exports = class Hello extends BaseCommand {
           .appendFile(`transcript-${channelName}.html`, infoElement.outerHTML)
           .catch((err) => console.log(err));
 
-        const chatlogElement = document.createElement("div");
-        chatlogElement.className = "chatlog";
+        const chatlogElement = document.createElement('div');
+        chatlogElement.className = 'chatlog';
 
         for (const msg of msgs) {
-          const messageContainer = document.createElement("div");
-          messageContainer.className = "chatlog_message-group";
+          const messageContainer = document.createElement('div');
+          messageContainer.className = 'chatlog_message-group';
 
           chatlogElement.appendChild(messageContainer);
 
-          const chatlogAuthorElement = document.createElement("div");
-          chatlogAuthorElement.className = "chatlog_author-avatar-container";
+          const chatlogAuthorElement = document.createElement('div');
+          chatlogAuthorElement.className = 'chatlog_author-avatar-container';
 
           messageContainer.appendChild(chatlogAuthorElement);
 
-          const img = document.createElement("img");
-          img.className = "chatlog_author-avatar";
+          const img = document.createElement('img');
+          img.className = 'chatlog_author-avatar';
           img.setAttribute(
-            "src",
+            'src',
             msg.author.displayAvatarURL({
               size: Number(128),
-              format: "png",
+              format: 'png',
               dynamic: true,
-            })
+            }),
           );
-          img.setAttribute("width", "44");
+          img.setAttribute('width', '44');
 
           chatlogAuthorElement.appendChild(img);
 
           // Create message container
-          const chatlogMessageElement = document.createElement("div");
-          chatlogMessageElement.className = "chatlog_messages";
+          const chatlogMessageElement = document.createElement('div');
+          chatlogMessageElement.className = 'chatlog_messages';
 
           messageContainer.appendChild(chatlogMessageElement);
 
           // Create author text
-          const authorElement = document.createElement("span");
-          authorElement.className = "chatlog_author-name";
+          const authorElement = document.createElement('span');
+          authorElement.className = 'chatlog_author-name';
 
           const authorText = document.createTextNode(msg.author.username);
           authorElement.appendChild(authorText);
@@ -192,35 +189,35 @@ module.exports = class Hello extends BaseCommand {
 
           // Create bot tag
           if (msg.author.bot) {
-            const botTagElement = document.createElement("span");
-            botTagElement.className = "chatlog_bot-tag";
+            const botTagElement = document.createElement('span');
+            botTagElement.className = 'chatlog_bot-tag';
 
-            const botTag = document.createTextNode("BOT");
+            const botTag = document.createTextNode('BOT');
             botTagElement.appendChild(botTag);
 
             chatlogMessageElement.appendChild(botTagElement);
           }
 
           // Create the date
-          const dateElement = document.createElement("span");
-          dateElement.className = "chatlog_timestamp";
+          const dateElement = document.createElement('span');
+          dateElement.className = 'chatlog_timestamp';
 
           const date = document.createTextNode(
-            moment(msg.createdAt).format("MMM D[,] YYYY h:mm a")
+            moment(msg.createdAt).format('MMM D[,] YYYY h:mm a'),
           );
 
           dateElement.appendChild(date);
           chatlogMessageElement.appendChild(dateElement);
 
           // Add the text conatiner
-          const contentContainer = document.createElement("div");
-          contentContainer.className = "chatlog_content";
+          const contentContainer = document.createElement('div');
+          contentContainer.className = 'chatlog_content';
 
           chatlogMessageElement.appendChild(contentContainer);
 
           // Text
-          const textElement = document.createElement("span");
-          textElement.className = "markdown";
+          const textElement = document.createElement('span');
+          textElement.className = 'markdown';
 
           const txt = document.createTextNode(msg.content);
           textElement.appendChild(txt);
@@ -230,40 +227,40 @@ module.exports = class Hello extends BaseCommand {
           if (msg.embeds.length > 0) {
             const embed = msg.embeds[0];
 
-            container = document.createElement("div");
-            container.className = "chatlog_embed";
+            container = document.createElement('div');
+            container.className = 'chatlog_embed';
             contentContainer.appendChild(container);
-            const embedWrapper = document.createElement("div");
-            embedWrapper.className = "chatlog_embed-wrapper";
-            const grid = document.createElement("div");
-            grid.className = "chatlog_embed-grid";
-            const embedAuthor = document.createElement("div");
-            embedAuthor.className = "chatlog_embed-author";
-            const embedTitle = document.createElement("div");
-            embedTitle.className = "chatlog_embed-title";
-            const embedDescription = document.createElement("div");
-            embedDescription.className = "chatlog_embed-description";
+            const embedWrapper = document.createElement('div');
+            embedWrapper.className = 'chatlog_embed-wrapper';
+            const grid = document.createElement('div');
+            grid.className = 'chatlog_embed-grid';
+            const embedAuthor = document.createElement('div');
+            embedAuthor.className = 'chatlog_embed-author';
+            const embedTitle = document.createElement('div');
+            embedTitle.className = 'chatlog_embed-title';
+            const embedDescription = document.createElement('div');
+            embedDescription.className = 'chatlog_embed-description';
 
             // Embed color
             if (embed.color) {
               embedWrapper.style.cssText = `border-color: #${embed.color
                 .toString(16)
-                .padStart(6, "0")};`;
+                .padStart(6, '0')};`;
             }
 
             if (embed.avatar) {
               // Add avatar
-              const image = document.createElement("img");
+              const image = document.createElement('img');
               image.setAttribute(
-                "src",
+                'src',
                 embed.author.avatarURL() ||
-                  "https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
+                  'https://discordapp.com/assets/6debd47ed13483642cf09e832ed0bc1b.png',
               );
-              image.className = "chatlog_embed-author-icon";
+              image.className = 'chatlog_embed-author-icon';
               embedAuthor.appendChild(image);
 
               // Add author name
-              const authorNode = document.createElement("a");
+              const authorNode = document.createElement('a');
               const authorName = document.createTextNode(embed.avatar.username);
               authorNode.append(authorName);
               embedAuthor.appendChild(authorNode);
@@ -276,7 +273,7 @@ module.exports = class Hello extends BaseCommand {
 
             if (embed.description) {
               const descriptionNode = document.createTextNode(
-                embed.description
+                embed.description,
               );
               embedDescription.append(descriptionNode);
             }
@@ -293,7 +290,7 @@ module.exports = class Hello extends BaseCommand {
         await fs
           .appendFile(
             `transcript-${channelName}.html`,
-            chatlogElement.outerHTML
+            chatlogElement.outerHTML,
           )
           .catch((err) => console.log(err));
       }
@@ -302,14 +299,14 @@ module.exports = class Hello extends BaseCommand {
 
       const logEmbed = new MessageEmbed()
         .setTimestamp()
-        .setColor("RED")
+        .setColor('RED')
         .setTitle(`Thread Closed | ${info.topic}`)
         .setDescription(
           `**Ticket creator:** ${target.tag} <@${
             target.id
           }>\n**Date created:** ${moment(info.dateCreated).format(
-            "MMMM Do YYYY, h:mm a"
-          )}\n**Closed by:** ${message.author.tag}`
+            'MMMM Do YYYY, h:mm a',
+          )}\n**Closed by:** ${message.author.tag}`,
         );
 
       await mmLog

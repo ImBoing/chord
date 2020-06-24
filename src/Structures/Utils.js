@@ -1,9 +1,8 @@
-/* eslint-disable no-undef */
 /* eslint-disable class-methods-use-this */
-const path = require("path");
-const { promisify } = require("util");
-const glob = promisify(require("glob"));
-const Command = require("./BaseCommand.js");
+const path = require('path');
+const { promisify } = require('util');
+const glob = promisify(require('glob'));
+const Command = require('./BaseCommand.js');
 
 module.exports = class Util {
   constructor(client) {
@@ -12,9 +11,9 @@ module.exports = class Util {
 
   isClass(input) {
     return (
-      typeof input === "function" &&
-      typeof input.prototype === "object" &&
-      input.toString().substring(0, 5) === "class"
+      typeof input === 'function' &&
+      typeof input.prototype === 'object' &&
+      input.toString().substring(0, 5) === 'class'
     );
   }
 
@@ -29,7 +28,7 @@ module.exports = class Util {
         const { name } = path.parse(commandFile);
         const File = require(commandFile);
         if (!this.isClass(File))
-          throw new TypeError(`Command ${name} does't export a class`);
+          throw new TypeError(`Command ${name} doesn't export a class`);
         const command = new File(this.client, name.toLowerCase());
         if (!(command instanceof Command))
           throw new TypeError(`Command ${name} doesn't belong in Commands`);

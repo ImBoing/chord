@@ -1,16 +1,13 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-console */
-const { Client, Collection, MessageEmbed } = require("discord.js");
-const Util = require("./Utils.js");
-const connectDB = require("../database/connect.js");
+const { Client, Collection, MessageEmbed } = require('discord.js');
+const Util = require('./Utils.js');
+const connectDB = require('../database/connect.js');
 
 const openThread = new Map();
 
 module.exports = class LAClient extends Client {
   constructor(options = {}) {
     super({
-      disableMentions: "everyone",
+      disableMentions: 'everyone',
     });
     this.validate(options);
 
@@ -20,17 +17,14 @@ module.exports = class LAClient extends Client {
 
     this.utils = new Util(this);
 
-    this.once("ready", () => {
+    this.once('ready', () => {
       connectDB();
-
       console.log(`Logged in as ${this.user.username}`);
     });
 
-    this.on("message", async (message) => {
-      const prefix = "la!";
+    this.on('message', async (message) => {
+      const prefix = 'la!';
       if (message.author.bot) return;
-
-      // eslint-disable-next-line no-unused-vars
       if (message.content.startsWith(prefix)) {
         const [...args] = message.content
           .slice(prefix.length)
@@ -46,11 +40,11 @@ module.exports = class LAClient extends Client {
         }
       }
 
-      const guild = this.guilds.cache.get("695278738018926632");
-      const report = require("../MM events/MM-report.js");
-      const partner = require("../MM events/MM-partner.js");
-      const socials = require("../MM events/MM-socials.js");
-      const management = require("../MM events/MM-management.js");
+      const guild = this.guilds.cache.get('695278738018926632');
+      const report = require('../MM events/MM-report.js');
+      const partner = require('../MM events/MM-partner.js');
+      const socials = require('../MM events/MM-socials.js');
+      const management = require('../MM events/MM-management.js');
 
       if (
         message.author.bot ||
@@ -58,27 +52,27 @@ module.exports = class LAClient extends Client {
         message.guild
       )
         return;
-      const staffGuild = this.guilds.cache.get("695278738018926632");
+      const staffGuild = this.guilds.cache.get('695278738018926632');
       if (
         !staffGuild.channels.cache.some(
           (ch) =>
             ch.topic ===
-            `Mod-mail channel ${message.author.id} (Please do not change)`
+            `Mod-mail channel ${message.author.id} (Please do not change)`,
         )
       ) {
         try {
-          await message.react("✅");
+          await message.react('✅');
           const { channel } = message;
 
           const ph1 = new MessageEmbed()
-            .setColor("GREEN")
-            .setTitle("Mod-mail Menu")
+            .setColor('GREEN')
+            .setTitle('Mod-mail Menu')
             .setDescription(
-              "Welcome to Mod-mail. This system is only to be used to contact staff members about reports, punishments, partnering with the server, receive information about the servers socials, or contact server management. Misusing this will result in a punishment."
+              'Welcome to Mod-mail. This system is only to be used to contact staff members about reports, punishments, partnering with the server, receive information about the servers socials, or contact server management. Misusing this will result in a punishment.',
             )
             .addField(
-              "What is this?",
-              "If you're reporting a member respond with `report` below. If you're interested with partnering with the server respond with `partner`. If you're wanting to know more about the servers socials respond below with `socials`. If you're wanting to know more about the servers socials respond below with `management`"
+              'What is this?',
+              "If you're reporting a member respond with `report` below. If you're interested with partnering with the server respond with `partner`. If you're wanting to know more about the servers socials respond below with `socials`. If you're wanting to know more about the servers socials respond below with `management`",
             );
 
           if (!openThread.has(message.author.id)) {
@@ -89,18 +83,18 @@ module.exports = class LAClient extends Client {
                 time: 7200000,
               });
 
-              collector.on("collect", async (collectedMessage) => {
-                if (collectedMessage.content.toLowerCase() === "report") {
+              collector.on('collect', async (collectedMessage) => {
+                if (collectedMessage.content.toLowerCase() === 'report') {
                   report(
                     collectedMessage,
                     filter,
                     guild,
                     collectedMessage.author,
                     openThread,
-                    collector
+                    collector,
                   );
                 } else if (
-                  collectedMessage.content.toLowerCase() === "partner"
+                  collectedMessage.content.toLowerCase() === 'partner'
                 ) {
                   partner(
                     collectedMessage,
@@ -108,10 +102,10 @@ module.exports = class LAClient extends Client {
                     guild,
                     collectedMessage.author,
                     openThread,
-                    collector
+                    collector,
                   );
                 } else if (
-                  collectedMessage.content.toLowerCase() === "socials"
+                  collectedMessage.content.toLowerCase() === 'socials'
                 ) {
                   socials(
                     collectedMessage,
@@ -119,10 +113,10 @@ module.exports = class LAClient extends Client {
                     guild,
                     collectedMessage.author,
                     openThread,
-                    collector
+                    collector,
                   );
                 } else if (
-                  collectedMessage.content.toLowerCase() === "management"
+                  collectedMessage.content.toLowerCase() === 'management'
                 ) {
                   management(
                     collectedMessage,
@@ -130,12 +124,12 @@ module.exports = class LAClient extends Client {
                     guild,
                     collectedMessage.author,
                     openThread,
-                    collector
+                    collector,
                   );
                 }
               });
-              collector.on("end", (collectedMessage) => {
-                console.log(`collected ${collectedMessage.size} messages`);
+              collector.on('end', () => {
+                /* empty */
               });
             });
           }
@@ -146,41 +140,41 @@ module.exports = class LAClient extends Client {
         const destination = staffGuild.channels.cache.find(
           (c) =>
             c.topic ===
-            `Mod-mail channel ${message.author.id} (Please do not change)`
+            `Mod-mail channel ${message.author.id} (Please do not change)`,
         );
         const embed = new MessageEmbed()
-          .setColor("GREEN")
+          .setColor('GREEN')
           .setAuthor(
             message.author.tag,
             message.author.displayAvatarURL(),
-            `https://discordapp.com/users/${message.author.id}`
+            `https://discordapp.com/users/${message.author.id}`,
           )
           .setDescription(message.content)
-          .setFooter("Message received")
+          .setFooter('Message received')
           .setTimestamp();
 
         if (destination) {
           destination.send(embed);
-          return message.react("✅");
+          return message.react('✅');
         }
 
-        message.react("❌");
+        message.react('❌');
       }
     });
   }
 
   validate(options) {
-    if (typeof options !== "object")
-      throw new TypeError("Options should be a type of Object.");
+    if (typeof options !== 'object')
+      throw new TypeError('Options should be a type of Object.');
 
     if (!options.token)
-      throw new Error("You must pass the token for the client.");
+      throw new Error('You must pass the token for the client.');
     this.token = options.token;
 
     if (!options.prefix)
-      throw new Error("You must pass a prefix for the client");
-    if (typeof options.prefix !== "string")
-      throw new TypeError("Prefix should be a type of string");
+      throw new Error('You must pass a prefix for the client');
+    if (typeof options.prefix !== 'string')
+      throw new TypeError('Prefix should be a type of string');
     this.prefix = options.prefix;
   }
 

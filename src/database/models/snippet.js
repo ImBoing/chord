@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const cpSchema = mongoose.Schema({
   snippetName: String,
@@ -6,4 +6,4 @@ const cpSchema = mongoose.Schema({
   guild: String,
 });
 
-module.exports = mongoose.model("snippets", cpSchema);
+module.exports = mongoose.model('snippets', cpSchema);

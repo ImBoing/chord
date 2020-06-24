@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const cpSchema = mongoose.Schema({
   ticketOwner: String,
@@ -7,4 +7,4 @@ const cpSchema = mongoose.Schema({
   dateCreated: String,
 });
 
-module.exports = mongoose.model("modMail", cpSchema);
+module.exports = mongoose.model('modMail', cpSchema);
