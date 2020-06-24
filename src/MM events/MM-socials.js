@@ -1,4 +1,7 @@
+/* eslint-disable no-console */
+/* eslint-disable new-cap */
 const { MessageEmbed } = require("discord.js");
+const data = require("../database/models/modmail.js");
 
 async function socials(message, filter, guild, member, map, collector) {
   let cont;
@@ -45,6 +48,15 @@ async function socials(message, filter, guild, member, map, collector) {
               .setFooter(`User id: ${member.id}`);
 
             thread.send(embed);
+
+            const info = new data({
+              ticketOwner: member.id,
+              channel: thread.id,
+              topic: "Socials",
+              dateCreated: new Date(Date.now()),
+            });
+
+            await info.save().catch((err) => console.log(err));
 
             const content = new MessageEmbed()
               .setColor("GREEN")

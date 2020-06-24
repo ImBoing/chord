@@ -1,30 +1,43 @@
+/* eslint-disable class-methods-use-this */
 const { MessageEmbed } = require("discord.js");
+const BaseCommand = require("../../Structures/BaseCommand.js");
 
-module.exports = {
-  name: "help",
-  category: "info",
-  description: "Returns all commands, or one specific command info",
-  usage: "[command | alias]",
-  run: async (client, message, args) => {
+module.exports = class Help extends BaseCommand {
+  constructor(...args) {
+    super(...args, {
+      name: "help",
+      aliases: ["help", "helpme", "commands"],
+      description: "Help commands",
+      usage: "help",
+      category: "general",
+    });
+  }
+
+  async run(message, args) {
     if (!args[0]) {
       const hEmbed = new MessageEmbed()
         .setColor("RANDOM")
-        .setAuthor("Lighting Ads Commands List", client.user.displayAvatarURL())
+        .setAuthor(
+          "Lighting Ads Commands List",
+          this.client.user.displayAvatarURL()
+        )
         .setDescription(
           "You can use `la!help [command]` or `la! help [category]` for more help. Example: `la!help mute`"
         )
         .addField("**Info**", `\`la!help info\``, true)
         .addField("**Moderation**", `\`la!help moderation\``, true)
-        .setThumbnail(client.user.displayAvatarURL({ size: 1024 }));
+        .setThumbnail(this.client.user.displayAvatarURL({ size: 1024 }));
 
       message.channel.send(hEmbed);
     } else {
-      const categorySearch = client.commands.filter(
+      const categorySearch = this.client.commands.filter(
         (c) => c.category === args[0].toLowerCase()
       );
       const command =
-        client.commands.get(args[0].toLowerCase()) ||
-        client.commands.get(client.aliases.get(args[0].toLowerCase()));
+        this.client.commands.get(args[0].toLowerCase()) ||
+        this.client.commands.get(
+          this.client.aliases.get(args[0].toLowerCase())
+        );
       if (!command) {
         if (categorySearch.size === 0) return;
         const category = new MessageEmbed()
@@ -55,5 +68,5 @@ module.exports = {
         message.channel.send(embed);
       }
     }
-  },
+  }
 };

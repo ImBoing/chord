@@ -1,16 +1,23 @@
-/* eslint-disable func-names */
 /* eslint-disable no-useless-concat */
 /* eslint-disable new-cap */
-/* eslint-disable no-console */
 /* eslint-disable prefer-destructuring */
+/* eslint-disable no-console */
+/* eslint-disable class-methods-use-this */
 const { MessageEmbed } = require("discord.js");
+const BaseCommand = require("../../Structures/BaseCommand.js");
 const data = require("../../database/models/snippet.js");
 
-module.exports = {
-  name: "snippet",
-  category: "modmail",
-  usage: "snippet",
-  run: async (client, message, args) => {
+module.exports = class Hello extends BaseCommand {
+  constructor(...args) {
+    super(...args, {
+      name: "testsnippet",
+      aliases: [],
+      description: "add, view, test, or remove snippets",
+      usage: "",
+    });
+  }
+
+  async run(message, args) {
     const condition = args[0];
     if (condition === "add") {
       // Used to add snippet
@@ -57,27 +64,33 @@ module.exports = {
         name = args[1];
         snippet = args.slice(2).join(" ");
         console.log(name);
-        console.log(snippet);
-        let single = await data.findOne({
-          snippetName: name,
-        });
-        if (!single) {
-          // If there is no data with the same name
-          single = new data({
+        await data
+          .findOne({
             snippetName: name,
-            snippetContent: snippet,
-            guild: message.guild.id,
+          })
+          .then(async (res) => {
+            console.log(res);
+
+            if (!res) {
+              console.log("Not in db");
+              // If there is no data with the same name
+              res = new data({
+                snippetName: name,
+                snippetContent: snippet,
+                guild: message.guild.id,
+              });
+              // Save the snippet
+              await res.save().catch((err) => console.log(err));
+              message.channel.send(`${name} has been saved`);
+            } else {
+              console.log("in db");
+              // Update the snippet
+              res.snippetName = name;
+              res.snippetContent = snippet;
+              await res.save().catch((err) => console.log(err));
+              message.channel.send(`${name} has been succesfully updated`);
+            }
           });
-          // Save the snippet
-          await single.save().catch((err) => console.log(err));
-          message.channel.send("Saved the snippet");
-        } else {
-          // Update the snippet
-          single.snippetName = name;
-          single.snippetContent = snippet;
-          await single.save().catch((err) => console.log(err));
-          message.channel.send(`${name} has been succesfully updated`);
-        }
       }
     } else if (condition === "remove") {
       // Used to remove a snippet
@@ -115,6 +128,7 @@ module.exports = {
           } else {
             const sName = res.map((z) => z.snippetName);
             const sContent = res.map((x) => x.snippetContent);
+            // eslint-disable-next-line func-names
             const sOutp = sContent.map(function (a, b) {
               // eslint-disable-next-line prettier/prettier
               return ["Name:" + ` **${sName[b]}**` + "\n" + "Snippet:" + ` ${a}`];
@@ -144,7 +158,7 @@ module.exports = {
             .then(async (res) => {
               const array = message.channel.topic;
               const id = array.split(" ")[2];
-              const user = client.users.cache.get(id);
+              const user = this.client.users.cache.get(id);
 
               const embed = new MessageEmbed()
                 .setColor("GREEN")
@@ -165,9 +179,9 @@ module.exports = {
                 });
             });
         } catch (err) {
-          console.log(err);
+          /* EMPTY */
         }
       }
     }
-  },
+  }
 };
