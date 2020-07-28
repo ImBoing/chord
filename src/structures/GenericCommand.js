@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 module.exports = class Command {
   constructor(client, name, options = {}) {
     this.client = client;
@@ -6,6 +7,8 @@ module.exports = class Command {
     this.description = options.description || 'No description';
     this.category = options.category || 'No category';
     this.usage = options.usage || 'No usage';
+    this.missingArgs = options.missingArgs;
+    this.perms = options.perms;
   }
 
   async run() {

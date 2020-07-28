@@ -1,13 +1,13 @@
 const { MessageEmbed } = require('discord.js');
-const BaseCommand = require('../../structures/BaseCommand.js');
+const GenericCommand = require('../../structures/GenericCommand.js');
 
-module.exports = class Help extends BaseCommand {
+module.exports = class Help extends GenericCommand {
   constructor(...args) {
     super(...args, {
       name: 'help',
       aliases: ['help', 'helpme', 'commands'],
       description: 'Help commands',
-      usage: 'help',
+      usage: '{prefix}help',
       category: 'general',
     });
   }
@@ -23,8 +23,8 @@ module.exports = class Help extends BaseCommand {
         .setDescription(
           'You can use `la!help [command]` or `la! help [category]` for more help. Example: `la!help mute`',
         )
-        .addField('**Info**', `\`la!help info\``, true)
-        .addField('**Moderation**', `\`la!help moderation\``, true)
+        .addField('**Info**', `\`la!help general\``, true)
+        .addField('**Moderation**', `\`la!help tools\``, true)
         .setThumbnail(this.client.user.displayAvatarURL({ size: 1024 }));
 
       message.channel.send(hEmbed);
@@ -56,8 +56,10 @@ module.exports = class Help extends BaseCommand {
               command.name.slice(0, 1).toLowerCase() + command.name.slice(1)
             } info**`,
           )
-          .setDescription(`${command.description}`)
-          .addField('Usage', `\`\`\`${command.usage}\`\`\``)
+          .setDescription(
+            `**Description:** ${command.description}\n**Remind:** Hooks such as [] or () are not to be used when using commands.`,
+          )
+          .addField('Usage', command.usage.replace(/{prefix}/g, 'la!'))
           .addField(
             'Aliases',
             `\`${
