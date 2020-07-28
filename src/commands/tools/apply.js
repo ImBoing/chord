@@ -7,7 +7,7 @@ module.exports = class Help extends GenericCommand {
       name: 'apply',
       aliases: ['application', 'job'],
       description: 'Lists all the avaliable applications',
-      usage: '{prefi}apply',
+      usage: '{prefix}apply',
       category: 'tools',
     });
   }
