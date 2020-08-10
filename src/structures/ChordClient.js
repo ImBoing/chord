@@ -1,6 +1,5 @@
 const { Client, Collection } = require('discord.js');
 const Util = require('./Utils.js');
-const connectDB = require('../database/connect.js');
 
 module.exports = class LAClient extends Client {
   constructor(options = {}) {
@@ -16,12 +15,11 @@ module.exports = class LAClient extends Client {
     this.utils = new Util(this);
 
     this.once('ready', () => {
-      connectDB();
       console.log(`Logged in as ${this.user.username}`);
     });
 
     this.on('message', async (message) => {
-      const prefix = 'la!';
+      const prefix = '$';
       if (message.author.bot) return;
       if (message.content.startsWith(prefix)) {
         const [...args] = message.content

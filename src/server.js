@@ -1,4 +1,4 @@
-const LAClient = require('./structures/LAClient.js');
+const LAClient = require('./structures/ChordClient.js');
 const config = require('./config.json');
 
 const client = new LAClient(config);
